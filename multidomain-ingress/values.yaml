@@ -1,0 +1,4 @@
+serviceName: "my-service"
+servicePort: 80
+domainNames:
+- "www.example.com"
