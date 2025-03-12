@@ -1,8 +1,4 @@
-param(
-    [Parameter(Mandatory=$true)]
-    [string[]]$DomainNames
-)
-
+$domainNames = Get-Content .\myvalues.yaml | ConvertFrom-Yaml | Select-Object -ExpandProperty domainNames
 $certFolder = "certificates"
 
 Push-Location $certFolder
@@ -12,7 +8,7 @@ $i = 0
 Write-Host ("Creating and uploading {0} certificates on Key Vault {1} ..." -f $DomainNames.Count, $KeyVaultName) -ForegroundColor Blue
 Write-Host ""
 
-$DomainNames | ForEach-Object {
+$domainNames | ForEach-Object {
     $i++
     Write-Host ("{0,3}. Creating certificate for domain: {1} ..." -f $i, $_) -ForegroundColor Green
     $sanitizedDomainName = $_ -replace '\.', '-'

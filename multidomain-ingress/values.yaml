@@ -1,5 +1,4 @@
 serviceName: "my-service"
 servicePort: 80
-keyVaultSecretsBaseUri: "https://mytestvault.vault.azure.net/certificates/"
 domainNames:
 - "www.example.com"

@@ -1,4 +1,3 @@
-keyVaultSecretsBaseUri: https://kvlgakstest.vault.azure.net/certificates/
 domainNames:
 - caio.ts.it
 - sempronio.ts.it
