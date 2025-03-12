@@ -1,0 +1,27 @@
+{{- range $hostName := .Values.domainNames }}
+{{- $normalizedHostName := $hostName | replace "." "-" -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.azure.com/tls-cert-keyvault-uri: {{ $.Values.keyVaultSecretsBaseUri }}ssl-{{ $normalizedHostName }}
+  name: ingress-{{ $normalizedHostName }}
+spec:
+  ingressClassName: webapprouting.kubernetes.azure.com
+  rules:
+  - host: {{ $hostName }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: {{ $.Values.serviceName }}
+            port:
+              number: {{ $.Values.servicePort }}
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - {{ $hostName }}
+    secretName: keyvault-ingress-{{ $normalizedHostName }}
+---
+{{- end }}
