@@ -1,7 +1,5 @@
 param(
     [Parameter(Mandatory=$true)]
-    [string]$KeyVaultName,
-    [Parameter(Mandatory=$true)]
     [string[]]$DomainNames
 )
 
@@ -21,9 +19,6 @@ $DomainNames | ForEach-Object {
     openssl req -new -x509 -nodes -out "$sanitizedDomainName.crt" -keyout "$sanitizedDomainName.key" -subj "/CN=$_" -addext "subjectAltName=DNS:$_"
     Get-Content "$sanitizedDomainName.key", "$sanitizedDomainName.crt" | Set-Content -Path "$sanitizedDomainName.pem" -Encoding Ascii
     Remove-Item "$sanitizedDomainName.key", "$sanitizedDomainName.crt"
-
-    Write-Host ("     Uploading to key vault secret {0}..." -f "ssl-$sanitizedDomainName") -ForegroundColor Gray
-    az keyvault certificate import --vault-name $KeyVaultName --name "ssl-$sanitizedDomainName" -f "$sanitizedDomainName.pem"
 }
 
 Write-Host ""

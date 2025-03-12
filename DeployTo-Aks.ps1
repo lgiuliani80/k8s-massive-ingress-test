@@ -12,7 +12,6 @@ $output | ForEach-Object {
     Write-Host ("{0,4}. Deploying ingress for domain: {1} ..." -f $i, $_.metadata.name) -ForegroundColor Green
 
     $ingress = $_
-    $ingress.metadata.annotations.Remove("kubernetes.azure.com/tls-cert-keyvault-uri")
     
     $secretName = $ingress.spec.tls[0].secretName
     $pemFile = "certificates\$($secretName -replace 'keyvault-ingress-', '').pem"
